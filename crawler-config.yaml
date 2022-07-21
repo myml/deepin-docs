@@ -1,0 +1,5 @@
+urls:
+  - path: packages/packages_zh.md
+    url: https://raw.githubusercontent.com/linuxdeepin/developer-center/github-integration/docs/mirrors/packages_zh.md
+  - path: sig/introduction.md
+    url: https://raw.githubusercontent.com/deepin-community/SIG/master/Introduction.md
