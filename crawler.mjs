@@ -26,7 +26,7 @@ async function crawler(url, p) {
 
   // parse markdown and download internal link
   if (url.endsWith(".md")) {
-    mdPaths.push(p);
+    mdPaths.push(p.slice(0, -3)); // remove .md suffix
     const content = await body.text();
     const html = marked(content);
     const doc = parser.parse(html);

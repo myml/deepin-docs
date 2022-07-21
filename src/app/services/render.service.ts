@@ -32,6 +32,9 @@ export class RenderService implements Resolve<Result> {
 
   async worker(path: string) {
     try {
+      if (!path.endsWith('.md')) {
+        path += '.md';
+      }
       const mdContent = await this.fileService.getFile(path);
       const baseUrl = path.slice(0, path.lastIndexOf('/') + 1);
       const result = await this.markdownService.redner(mdContent, {
