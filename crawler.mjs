@@ -1,8 +1,9 @@
 import { marked } from "marked";
 import fetch from "node-fetch";
 import path from "path";
-import { writeFile, mkdir } from "fs/promises";
+import { writeFile, mkdir, readFile } from "fs/promises";
 import * as parser from "node-html-parser";
+import { load } from "js-yaml";
 
 // file download dir
 const assets = "src/assets";
@@ -49,12 +50,9 @@ async function crawler(url, p) {
   }
 }
 
-const urls = [
-  {
-    path: "a/packages/packages_zh.md",
-    url: "http://localhost:8000/docs/mirrors/packages_zh.md",
-  },
-];
+const config = load(await readFile("crawler-config.yaml"));
+console.log(config);
+const urls = config.urls || [];
 
 await Promise.all(urls.map((url) => crawler(url.url, url.path)));
 

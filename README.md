@@ -1,27 +1,50 @@
 # DeepinDocs
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.6.
+## 抓取 markdown
 
-## Development server
+### 配置文件
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+在项目根目录创建配置文件crawler-config.yaml，添加需要抓取的url到文件中。
 
-## Code scaffolding
+配置文件示例
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```yaml
+# crawler-config.yaml
+urls:
+  - path: packages/packages_zh.md
+    url: http://localhost:8000/docs/mirrors/packages_zh.md
+```
 
-## Build
+配置文件格式
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```json
+{
+ "title": "Root", 
+ "type": "object",
+ "properties": {
+  "urls": {
+   "type": "array",
+   "items":{
+    "title": "Items", 
+    "type": "object",
+    "properties": {
+     "path": {
+      "type": "string",
+     },
+     "url": {
+      "type": "string",
+     }
+    }
+   }
+  }
+ }
+}
+```
 
-## Running unit tests
+### 执行抓取
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+运行 `node crawler.mjs`, 配置的文件会下载到src/assets目录，并根据配置的path生成routes文件。
 
-## Running end-to-end tests
+## 渲染markdown
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+使用 `pnpm prerender` 渲染抓取的文件到dist/browser
