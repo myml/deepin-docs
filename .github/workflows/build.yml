@@ -10,39 +10,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 6
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Crawler
-        run: node crawler.mjs
-
-      - name: Angular Cache
-        uses: actions/cache@v3
-        with:
-          path: .angular
-          key: ${{runner.OS}}-angular-caches-${{ hashFiles('pnpm-lock.yaml') }}
-
-      - name: Prerender
-        run: |
-          pnpm ng config cli.cache.environment all
-          pnpm prerender 
-          ls -la
-          pnpm ng cache info
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/deepin-docs/browser
+      - name: Trigger deepin website update
+        run: curl ${{ secrets.DEEPIN_WEBSITE_WEBHOOK }}
